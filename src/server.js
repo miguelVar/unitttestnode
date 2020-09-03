@@ -8,7 +8,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-const tasks =[
+const users =[
     {
         id:1,
         name:"Miguel",
@@ -27,32 +27,44 @@ const tasks =[
 ];
 
 app.get('/', (req, res) => {
-    console.log('fsfsfdf');
-    tasks.push({
-        id:"4",
-        name:"Carlos",
-        completed:false
-        }
-    );
-    res.send(tasks)
+    res.send(users)
 });
 
-app.get("/:id",(req, res)=>{
+app.get("/user/:id",(req, res)=>{
     const taskId = req.params.id;
     console.log(taskId);
-    const task = tasks.find(task => task.id === parseInt(taskId));
-    if (!task) return res.status(200).send("No encontrado");
+    const task = users.find(task => task.id === parseInt(taskId));
+    if (!task) return res.status(404).send("Usuario no encontrado");
     res.send(task)
 });
 
 app.post("", (req,res)=>{
     const task ={
-        id: tasks.length+1,
+        id: users.length+1,
         name:req.body.name,
         completed:req.body.completed
-    }
-    tasks.push(task);
-    res.status(200).send(task);
+    };
+    users.push(task);
+    res.status(201).send(task);
+});
+
+app.put("/:id",(req,res)=>{
+    const userId = req.params.id;
+    const user = users.find(user => user.id === parseInt(userId));
+    if(!user) return res.status(404).send("El usuario no existe");
+    user.name=req.body.name;
+    user.completed= req.body.completed;
+    res.send(user)
+});
+
+app.delete("/:id",(req,res)=>{
+    const userId = req.params.id;
+    const user = users.find(user => user.id === parseInt(userId));
+    if(!user) return res.status(404).send("El usuario no existe");
+
+    const index = users.indexOf(user);
+    users.splice(index,1);
+    res.send(user)
 });
 
 
