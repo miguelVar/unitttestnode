@@ -8,7 +8,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     console.log('fsfsfdf');
     res.send('Miguel Vargas')
 });
