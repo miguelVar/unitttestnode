@@ -2,10 +2,15 @@
   "name": "unitttestnode",
   "version": "1.0.0",
   "description": "Build",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "./node_modules/.bin/mocha **/*.spec.js",
+    "start": "node src/server.js",
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test"
+  },
+  "nyc": {
+    "include": "src",
+    "exclude": "spec"
   },
   "repository": {
     "type": "git",
@@ -20,7 +25,15 @@
   "homepage": "https://github.com/miguelVar/unitttestnode#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chai-http": "^4.3.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "request": "^2.88.2"
   }
 }
