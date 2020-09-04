@@ -7,32 +7,27 @@ const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-
 const users =[
     {
         id:1,
-        name:"Miguel",
-        apellido:"Vargas",
-        direccion:"cra 4 # 5-8"
-    },
-    {
-        id:2,
-        name:"Andres",
-        apellido:"Perez",
-        direccion:"cra 7 # 5-8"
-    },
-    {
-        id:3,
-        name:"Carlos",
-        apellido:"Rojas",
-        direccion:"cra 3 # 5-8"
+        nombre: "Tester",
+        apellido:"Tester",
+        direccion:"cra 4 # 7-8"
     }
 ];
 
+
+/**
+ * Obtener todos los usuarios
+ */
 app.get('/', (req, res) => {
-    res.send(users)
+    res.send(users);
 });
 
+
+/**
+ * Obtener un usuario en especifico
+ */
 app.get("/user/:id",(req, res)=>{
     const taskId = req.params.id;
     console.log(taskId);
@@ -41,10 +36,14 @@ app.get("/user/:id",(req, res)=>{
     res.send(task)
 });
 
+
+/**
+ * Registrar un usuario
+ */
 app.post("", (req,res)=>{
     const task ={
         id: users.length+1,
-        name:req.body.name,
+        nombre:req.body.nombre,
         apellido:req.body.apellido,
         direccion:req.body.direccion
     };
@@ -52,16 +51,24 @@ app.post("", (req,res)=>{
     res.status(201).send(task);
 });
 
+/**
+ * Actualizar un usuairo
+ */
+
 app.put("/:id",(req,res)=>{
     const userId = req.params.id;
     const user = users.find(user => user.id === parseInt(userId));
     if(!user) return res.status(404).send("El usuario no existe");
-    user.name=req.body.name;
+    user.nombre=req.body.nombre;
     user.apellido=req.body.apellido;
     user.direccion=req.body.direccion;
     res.send(user)
 });
 
+
+/***
+ * Eliminar un usuario
+ */
 app.delete("/:id",(req,res)=>{
     const userId = req.params.id;
     const user = users.find(user => user.id === parseInt(userId));

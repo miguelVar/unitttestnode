@@ -17,7 +17,7 @@ describe('Tareas API', () => {
                 .get("/").end((error, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
-                res.body.length.should.be.eq(3);
+                res.body.length.should.be.eq(1);
                 done();
             })
         });
@@ -44,7 +44,7 @@ describe('Tareas API', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('Object');
                     res.body.should.have.property('id');
-                    res.body.should.have.property('name');
+                    res.body.should.have.property('nombre');
                     res.body.should.have.property('apellido');
                     res.body.should.have.property('direccion');
                     res.body.should.have.property('id').eq(1);
@@ -71,9 +71,9 @@ describe('Tareas API', () => {
     describe("POST user /", () => {
         it("Insertar un nuevo usuario", (done) => {
             const user = {
-                name: "Tester",
-                apellido:"Tester",
-                direccion:"cra 4 # 7-8"
+                nombre: "Tester",
+                apellido: "Tester",
+                direccion: "cra 4 # 7-8"
             };
             chai.request(server)
                 .post("/")
@@ -81,8 +81,8 @@ describe('Tareas API', () => {
                 .end((error, res) => {
                     res.should.have.status(201);
                     res.body.should.be.a('Object');
-                    res.body.should.have.property('id').eq(4);
-                    res.body.should.have.property('name').eq("Tester");
+                    res.body.should.have.property('id').eq(2);
+                    res.body.should.have.property('nombre').eq("Tester");
                     res.body.should.have.property('apellido').eq("Tester");
                     done();
                 });
@@ -97,9 +97,9 @@ describe('Tareas API', () => {
         it("Dado que se pasa el id del usuario por parametro y esiste entonces se debe actualizar", (done) => {
             const userId = 1;
             const user = {
-                name: "Tester changed",
-                apellido:"Tester",
-                direccion:"cra 4 # 7-8"
+                nombre: "Tester changed",
+                apellido: "Tester",
+                direccion: "cra 4 # 7-8"
             };
             chai.request(server)
                 .put("/" + userId)
@@ -108,7 +108,7 @@ describe('Tareas API', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('Object');
                     res.body.should.have.property('id').eq(1);
-                    res.body.should.have.property('name').eq("Tester changed");
+                    res.body.should.have.property('nombre').eq("Tester changed");
                     res.body.should.have.property('apellido').eq("Tester");
                     done();
                 });
@@ -134,8 +134,15 @@ describe('Tareas API', () => {
     describe("Delete user /:id", () => {
         it("Dado que se pasa el id del usuario por parametro y esiste entonces se debe eliminar", (done) => {
             const userId = 1;
+            const user = {
+                id: 1,
+                nombre: "Tester",
+                apellido: "Tester",
+                direccion: "cra 4 # 7-8"
+            };
             chai.request(server)
                 .delete("/" + userId)
+                .send(user)
                 .end((error, res) => {
                     res.should.have.status(200);
                     done();
