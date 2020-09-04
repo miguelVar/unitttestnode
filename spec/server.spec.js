@@ -45,7 +45,8 @@ describe('Tareas API', () => {
                     res.body.should.be.a('Object');
                     res.body.should.have.property('id');
                     res.body.should.have.property('name');
-                    res.body.should.have.property('completed');
+                    res.body.should.have.property('apellido');
+                    res.body.should.have.property('direccion');
                     res.body.should.have.property('id').eq(1);
                     done();
                 });
@@ -71,7 +72,8 @@ describe('Tareas API', () => {
         it("Insertar un nuevo usuario", (done) => {
             const user = {
                 name: "Tester",
-                completed: true
+                apellido:"Tester",
+                direccion:"cra 4 # 7-8"
             };
             chai.request(server)
                 .post("/")
@@ -81,7 +83,7 @@ describe('Tareas API', () => {
                     res.body.should.be.a('Object');
                     res.body.should.have.property('id').eq(4);
                     res.body.should.have.property('name').eq("Tester");
-                    res.body.should.have.property('completed').eq(true);
+                    res.body.should.have.property('apellido').eq("Tester");
                     done();
                 });
         });
@@ -96,7 +98,8 @@ describe('Tareas API', () => {
             const userId = 1;
             const user = {
                 name: "Tester changed",
-                completed: true
+                apellido:"Tester",
+                direccion:"cra 4 # 7-8"
             };
             chai.request(server)
                 .put("/" + userId)
@@ -106,7 +109,7 @@ describe('Tareas API', () => {
                     res.body.should.be.a('Object');
                     res.body.should.have.property('id').eq(1);
                     res.body.should.have.property('name').eq("Tester changed");
-                    res.body.should.have.property('completed').eq(true);
+                    res.body.should.have.property('apellido').eq("Tester");
                     done();
                 });
         });
@@ -114,13 +117,8 @@ describe('Tareas API', () => {
 
         it("Dado que se pasa el id del usuario por parametro y no esiste entonces se debe actualizar", (done) => {
             const userId = 6;
-            const user = {
-                name: "Tester changed",
-                completed: true
-            };
             chai.request(server)
                 .put("/" + userId)
-                .send(user)
                 .end((error, res) => {
                     res.should.have.status(404);
                     res.text.should.eq("El usuario no existe");

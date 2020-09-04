@@ -12,17 +12,20 @@ const users =[
     {
         id:1,
         name:"Miguel",
-        completed:false
+        apellido:"Vargas",
+        direccion:"cra 4 # 5-8"
     },
     {
         id:2,
         name:"Andres",
-        completed:false
+        apellido:"Perez",
+        direccion:"cra 7 # 5-8"
     },
     {
         id:3,
         name:"Carlos",
-        completed:false
+        apellido:"Rojas",
+        direccion:"cra 3 # 5-8"
     }
 ];
 
@@ -42,7 +45,8 @@ app.post("", (req,res)=>{
     const task ={
         id: users.length+1,
         name:req.body.name,
-        completed:req.body.completed
+        apellido:req.body.apellido,
+        direccion:req.body.direccion
     };
     users.push(task);
     res.status(201).send(task);
@@ -53,7 +57,8 @@ app.put("/:id",(req,res)=>{
     const user = users.find(user => user.id === parseInt(userId));
     if(!user) return res.status(404).send("El usuario no existe");
     user.name=req.body.name;
-    user.completed= req.body.completed;
+    user.apellido=req.body.apellido;
+    user.direccion=req.body.direccion;
     res.send(user)
 });
 
